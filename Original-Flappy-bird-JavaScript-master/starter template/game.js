@@ -7,7 +7,8 @@ const ctx = cvs.getContext('2d');
 //game vars and consts 
 
 let frames = 0; 
-    //looping will increment frames 
+
+//looping will increment frames 
 const DEGREE = Math.PI/180; 
 
 
@@ -24,8 +25,8 @@ const bg = {
     h: 226,
     x: 0, 
     y: cvs.height - 226,
-
-
+    
+    
     draw: function() {
         ctx.drawImage(sprite, this.sX, this.sY, this.w, this.h, this.x, this.y, this.w, this.h); 
         ctx.drawImage(sprite, this.sX, this.sY, this.w, this.h, this.x + this.w, this.y, this.w, this.h); 
@@ -47,16 +48,70 @@ const fg = {
     draw: function () {
         ctx.drawImage(sprite, this.sX, this.sY, this.w, this.h, this.x, this.y, this.w, this.h);
         ctx.drawImage(sprite, this.sX, this.sY, this.w, this.h, this.x + this.w, this.y, this.w, this.h);
-
+        
     },
-
+    
     update: function() {
         if(state.current == state.game) {
             this.x = (this.x - this.dx) % (this.w/2)
         }
     }
-
+    
 }
+
+const pipes = {
+    position : [],
+
+    top: {
+        sX: 553,
+        sY: 0
+    },
+    bottom: {
+        sX: 502,
+        sY: 0
+    },
+
+    w: 53,
+    h: 400,
+    gap: 85,
+    maxYPos: -150,
+    dx: 2,
+
+    draw : function() {
+        for(let i = 0; i < this.position.length; i++) {
+            let p = this.position[i];
+
+            let topYPos = p.y; 
+            let bottomYPos = p.y + this.h + this.gap;
+
+            // top pipe
+            ctx.drawImage(sprite, this.top.sX, this.top.sY, this.w, this.h, p.x, topYPos, this.w, this.h);
+
+            // bottom pipe
+            ctx.drawImage(sprite, this.bottom.sX, this.bottom.sY, this.w, this.h, p.x, bottomYPos, this.w, this.h);  
+        }
+    },
+
+
+    update : function() {
+        if(state.current !== state.game) return; 
+
+        if(frames % 100 == 0){
+            this.position.push({
+                x : cvs.width,
+                y : this.maxYPos * (Math.random() + 1)
+            });
+        }
+
+        for (let i = 0 ; i < this.position.length; i++){
+            let p = this.position[i];
+
+            p.x -= this.dx; 
+        }
+    }
+}
+
+
 
 const getReady = {
     sX: 0,
@@ -145,7 +200,7 @@ const bird = {
     },
     
     flap: function(){
-        this.speed =- this.jump; 
+        this.speed = -this.jump; 
     },
 
     update: function() { 
@@ -192,6 +247,7 @@ function draw() {
     ctx.fillRect(0, 0, cvs.width, cvs.height)
         //rect has same dimension as canvas
     bg.draw();
+    pipes.draw(); 
     fg.draw(); 
     bird.draw();
     getReady.draw();
@@ -203,7 +259,7 @@ function draw() {
 function update() {
     bird.update();
     fg.update(); 
-
+    pipes.update(); 
 }
 
 //loop
