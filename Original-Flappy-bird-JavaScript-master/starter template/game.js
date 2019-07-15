@@ -133,7 +133,7 @@ const bird = {
     },
     
     flap: function(){
-        this.speed = - this.jump; 
+        this.speed =- this.jump; 
     },
 
     update: function() { 
@@ -147,11 +147,18 @@ const bird = {
         
 
         if (state.current == state.getReady) {
-            
+            this.y = 150; // reset pos
         } else {
             this.speed += this.gravity; // this is pos velocity
 
             this.y += this.speed; // this changes y position of the bird with speed 
+            
+            if(this.y + this.h/2 >= cvs.height - fg.h) {
+                this.y = cvs.height - fg.h - this.h/2;
+                if (state.current == state.game){
+                    state.current = state.over; 
+                }
+            }
         }
     }
 
