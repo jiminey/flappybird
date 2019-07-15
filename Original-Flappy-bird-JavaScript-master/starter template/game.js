@@ -234,7 +234,7 @@ const bird = {
 
     frame : 0,
     gravity : 0.25,
-    jump : 4.6,
+    jump : 6.6,
     speed : 0,
     rotation : 0,
     jump_counter : 0,
@@ -280,7 +280,7 @@ const bird = {
             if (this.y >= cvs.height - fg.h){
                 this.y = cvs.height - fg.h;
                 this.speed = 0; 
-                this.jump_counter = 1; 
+                this.jump_counter = 2; 
 
             }
 
@@ -334,7 +334,6 @@ function loop() {
     update();
     draw(); 
     frames++; 
-
     requestAnimationFrame(loop); 
     //this rerenders the page so bird and pipe moves 
 }
