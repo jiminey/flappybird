@@ -66,48 +66,60 @@ const fg = {
 
 const skeleton = {
 
-    // animation: [
-    //     { sX: 0, sY: 0 },
-    //     { sX: 43, sY: 0 },
-    //     { sX: 86, sY: 0 },
+    animation: [
+        
+        { sX: 0, sY: 0 },
+        { sX: 43, sY: 0 },
+        { sX: 86, sY: 0 },
 
-    //     { sX: 129, sY: 0 },
-    //     { sX: 172, sY: 0 },
-    //     { sX: 215, sY: 0 },
+        { sX: 129, sY: 0 },
+        { sX: 172, sY: 0 },
+        { sX: 215, sY: 0 },
 
-    //     { sX: 258, sY: 0 },
-    //     { sX: 301, sY: 0 },
-    //     { sX: 344, sY: 0 },
-    // ], 
-    sX: 0,
-    sY: 0,
+        { sX: 258, sY: 0 },
+        { sX: 301, sY: 0 },
+        { sX: 344, sY: 0 },
+
+        { sX: 387, sY: 0 },
+        { sX: 430, sY: 0 },
+        { sX: 473, sY: 0 },
+
+        { sX: 516, sY: 0 },
+        { sX: 559, sY: 0 },
+        { sX: 645, sY: 0 },
+
+        { sX: 688, sY: 0 },
+        { sX: 731, sY: 0 },
+        { sX: 774, sY: 0 },
+
+    ],
+    
+    // sX: 215,
+    // sY: 0,
+
     w: 43,
     h: 37,
-    x: 0,
-    y: cvs.height - fg.h,
+    x: cvs.width - 60,
+    y: cvs.height - fg.h -37,
     dx: 2,
-    // frame: 0, 
+    frame: 0, 
 
 
 
-    draw: function () {
-        // let skeleton = this.animation[this.frame]
+    draw : function () {
+        let skeleton = this.animation[this.frame]
             
-        ctx.drawImage(skeletonsprite, this.sX, this.sY, this.w, this.h, 100, 100, this.w, this.h);
+        ctx.drawImage(skeletonsprite, skeleton.sX, skeleton.sY, this.w, this.h, this.x, this.y, this.w * 1.5, this.h * 1.5);
 
 
     },
 
-    update: function () {
-
-       
-        // WE INCREMENT THE FRAME BY 1, EACH PERIOD
-        // this.frame += frames % this.period == 0 ? 1 : 0;
-        // FRAME GOES FROM 0 To 4, THEN AGAIN TO 0
-        // this.frame = this.frame % this.animation.length;
-        
+    update : function () {
+        this.period = state.current == state.getReady ? 10 : 5;
+        this.frame += frames % this.period == 0 ? 1 : 0;
+        this.frame = this.frame % this.animation.length;
         // this.x -= this.dx;
-        
+         
         
     },
 
@@ -314,7 +326,7 @@ function draw() {
 function update() {
     bird.update();
     fg.update(); 
-    // skeleton.update(); 
+    skeleton.update(); 
     // pipes.update(); 
 }
 
