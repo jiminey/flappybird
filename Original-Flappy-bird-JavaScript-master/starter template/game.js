@@ -66,6 +66,8 @@ const fg = {
 
 const skeleton = {
 
+    position : [], 
+
     animation: [
         
         { sX: 0, sY: 0 },
@@ -90,35 +92,54 @@ const skeleton = {
 
         { sX: 688, sY: 0 },
         { sX: 731, sY: 0 },
-        { sX: 774, sY: 0 },
+
 
     ],
     
-    // sX: 215,
-    // sY: 0,
 
     w: 43,
     h: 37,
-    x: cvs.width - 60,
-    y: cvs.height - fg.h -37,
     dx: 2,
     frame: 0, 
 
 
 
     draw : function () {
-        let skeleton = this.animation[this.frame]
+        for (let i = 0; i < this.position.length; i++) {
+            let p = this.position[i];
+            let skeleton = this.animation[this.frame]
             
-        ctx.drawImage(skeletonsprite, skeleton.sX, skeleton.sY, this.w, this.h, this.x, this.y, this.w * 1.5, this.h * 1.5);
-
+            ctx.drawImage(skeletonsprite, skeleton.sX, skeleton.sY, this.w, this.h, p.x , p.y, this.w * 2, this.h * 2);
+        }
 
     },
 
     update : function () {
-        this.period = state.current == state.getReady ? 10 : 5;
+        this.period = state.current == state.getReady ? 6 : 5;
         this.frame += frames % this.period == 0 ? 1 : 0;
         this.frame = this.frame % this.animation.length;
-        // this.x -= this.dx;
+        
+        
+        if (state.current !== state.game) return;
+        
+        //pushes skeletons in arr 
+        if (frames % 200    == 0) {
+            this.position.push({
+                x: cvs.width,
+                y: cvs.height - fg.h - 37,
+            });
+        }
+        
+        for (let i = 0; i < this.position.length; i++) {
+            let p = this.position[i];
+
+            p.x -= this.dx;
+            
+            //removes skeleton 
+            if (p.x + this.w <= 0) {
+                this.position.shift();
+            }
+        }
          
         
     },
