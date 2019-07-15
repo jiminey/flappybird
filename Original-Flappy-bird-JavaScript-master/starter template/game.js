@@ -121,6 +121,9 @@ const bird = {
     h: 26,
 
     frame : 0,
+    gravity : 0.25,
+    jump : 4.6,
+    speed : 0,
 
     draw: function () {
         let bird = this.animation[this.frame];
@@ -130,10 +133,10 @@ const bird = {
     },
     
     flap: function(){
-
+        this.speed = - this.jump; 
     },
 
-    update: function() {
+    update: function() { 
 
         // IF THE GAME STATE IS GET READY STATE, THE BIRD MUST FLAP SLOWLY
         this.period = state.current == state.getReady ? 10 : 5;
@@ -141,7 +144,15 @@ const bird = {
         this.frame += frames % this.period == 0 ? 1 : 0;
         // FRAME GOES FROM 0 To 4, THEN AGAIN TO 0
         this.frame = this.frame % this.animation.length;
-    
+        
+
+        if (state.current == state.getReady) {
+            
+        } else {
+            this.speed += this.gravity; // this is pos velocity
+
+            this.y += this.speed; // this changes y position of the bird with speed 
+        }
     }
 
 
