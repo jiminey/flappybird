@@ -16,8 +16,8 @@ const DEGREE = Math.PI/180;
 const sprite = new Image(); 
 sprite.src = "img/sprite.png";
 
-// const skeletonsprite = new Image(); 
-// skeletonsprite.src = "img/skeletonatk.png";
+const skeletonsprite = new Image(); 
+skeletonsprite.src = "img/skeletonatk.png";
 
 //background 
 const bg = {
@@ -35,6 +35,8 @@ const bg = {
     }
     // drawimage takes in (sprite, sx,sy ,swidth, sheight, dx, dy, dw,dh )
     // s = src image, and d = destination canvas
+
+
 }   
 
 
@@ -61,106 +63,57 @@ const fg = {
     
 }
 
-// const skeleton = {
-//     position : [], 
-//     animation: [
-//         { sX: 0, sY: 0 },
-//         { sX: 43, sY: 0 },
-//         { sX: 86, sY: 0 },
 
-//         { sX: 129, sY: 0 },
-//         { sX: 172, sY: 0 },
-//         { sX: 215, sY: 0 },
+const skeleton = {
 
-//         { sX: 258, sY: 0 },
-//         { sX: 301, sY: 0 },
-//         { sX: 344, sY: 0 },
-//     ], 
-//     w: 43,
-//     h: 37,
-//     x: 0,
-//     y: cvs.height - 112,
-//     dx: 2, 
+    // animation: [
+    //     { sX: 0, sY: 0 },
+    //     { sX: 43, sY: 0 },
+    //     { sX: 86, sY: 0 },
 
-//     draw : function() {
-//         for(let i = 0; i < this.position.length; i++){
-//             let p = this.position[i];
+    //     { sX: 129, sY: 0 },
+    //     { sX: 172, sY: 0 },
+    //     { sX: 215, sY: 0 },
 
-//             ctx.drawImage(skeletonsprite, this)
-//         }
-//     }
-// }
-
-const pipes = {
-    position : [],
-
-    top: {
-        sX: 553,
-        sY: 0
-    },
-    bottom: {
-        sX: 502,
-        sY: 0
-    },
-
-    w: 53,
-    h: 400,
-    gap: 85,
-    maxYPos: -150,
+    //     { sX: 258, sY: 0 },
+    //     { sX: 301, sY: 0 },
+    //     { sX: 344, sY: 0 },
+    // ], 
+    sX: 0,
+    sY: 0,
+    w: 43,
+    h: 37,
+    x: 0,
+    y: cvs.height - fg.h,
     dx: 2,
+    // frame: 0, 
 
-    draw : function() {
-        for(let i = 0; i < this.position.length; i++) {
-            let p = this.position[i];
 
-            let topYPos = p.y; 
-            let bottomYPos = p.y + this.h + this.gap;
 
-            // top pipe
-            ctx.drawImage(sprite, this.top.sX, this.top.sY, this.w, this.h, p.x, topYPos, this.w, this.h);
+    draw: function () {
+        // let skeleton = this.animation[this.frame]
+            
+        ctx.drawImage(skeletonsprite, this.sX, this.sY, this.w, this.h, 100, 100, this.w, this.h);
 
-            // bottom pipe
-            ctx.drawImage(sprite, this.bottom.sX, this.bottom.sY, this.w, this.h, p.x, bottomYPos, this.w, this.h);  
-        }
+
     },
 
+    update: function () {
 
-    update : function() {
-        if(state.current !== state.game) return; 
+       
+        // WE INCREMENT THE FRAME BY 1, EACH PERIOD
+        // this.frame += frames % this.period == 0 ? 1 : 0;
+        // FRAME GOES FROM 0 To 4, THEN AGAIN TO 0
+        // this.frame = this.frame % this.animation.length;
+        
+        // this.x -= this.dx;
+        
+        
+    },
 
-        if(frames % 100 == 0){
-            this.position.push({
-                x : cvs.width,
-                y : this.maxYPos * (Math.random() + 1)
-            });
-        }
-
-        for (let i = 0 ; i < this.position.length; i++){
-            let p = this.position[i];
-
-           
-            let bottomPipeYPos = p.y + this.h + this.gap;
-
-            //collision logic
-            if(bird.x + bird.radius > p.x && bird.x - bird.radius < p.x + this.w &&
-               bird.y + bird.radius > p.y && bird.y - bird.radius < p.y + this.h ){
-                    state.current = state.over; 
-            }
-            //top 
-            if(bird.x + bird.radius > p.x && bird.x - bird.radius < p.x + this.w &&
-               bird.y + bird.radius > bottomPipeYPos && bird.y - bird.radius < bottomPipeYPos + this.h ){
-                    state.current = state.over; 
-            }
-            //bottom 
-            
-            p.x -= this.dx; 
-            //removes pipe once off map 
-            if(p.x + this.w <= 0 ){
-                this.position.shift;
-            }
-        }
-    }
+    
 }
+
 
 
 
@@ -351,6 +304,7 @@ function draw() {
     // pipes.draw(); 
     fg.draw(); 
     bird.draw();
+    skeleton.draw();
     getReady.draw();
     gameOver.draw();
 }
@@ -360,6 +314,7 @@ function draw() {
 function update() {
     bird.update();
     fg.update(); 
+    // skeleton.update(); 
     // pipes.update(); 
 }
 
