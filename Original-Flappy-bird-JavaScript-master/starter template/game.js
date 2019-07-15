@@ -250,7 +250,7 @@ const bird = {
     },
     
     flap: function(){
-        this.speed = -this.jump; 
+       this.speed = -this.jump;
     },
 
     update: function() { 
@@ -264,27 +264,32 @@ const bird = {
         
 
         if (state.current == state.getReady) {
-            this.y = 150; // reset pos
+            this.y = fg.y; // reset pos
             this.rotation = 0 * DEGREE;
         } else {
-            this.speed += this.gravity; // this is pos velocity
+            this.speed += this.gravity;
+
+            if (this.y >= fg.y) {
+                this.y = fg.y;
+                this.speed = 0;
+            } //logic to keep it at foregroun 
 
             this.y += this.speed; // this changes y position of the bird with speed 
             
-            if(this.y + this.h/2 >= cvs.height - fg.h) {
-                this.y = cvs.height - fg.h - this.h/2;
-                if (state.current == state.game){
-                    state.current = state.over; 
-                }
-            }
+            // if(this.y + this.h/2 >= cvs.height - fg.h) {
+            //     this.y = cvs.height - fg.h - this.h/2;
+            //     if (state.current == state.game){
+            //         state.current = state.over; 
+            //     }
+            // }
 
-            //if speed is greater than jump than bird fall down 
-            if (this.speed >= this.jump) {
-                this.rotation = 90 * DEGREE; 
-                this.frame = 1; 
-            } else {
-                this.rotation = -25 * DEGREE; 
-            }
+            // //if speed is greater than jump than bird fall down 
+            // if (this.speed >= this.jump) {
+            //     this.rotation = 90 * DEGREE; 
+            //     this.frame = 1; 
+            // } else {
+            //     this.rotation = -25 * DEGREE; 
+            // }
         }
     }
 
@@ -297,7 +302,7 @@ function draw() {
     ctx.fillRect(0, 0, cvs.width, cvs.height)
         //rect has same dimension as canvas
     bg.draw();
-    pipes.draw(); 
+    // pipes.draw(); 
     fg.draw(); 
     bird.draw();
     getReady.draw();
@@ -309,7 +314,7 @@ function draw() {
 function update() {
     bird.update();
     fg.update(); 
-    pipes.update(); 
+    // pipes.update(); 
 }
 
 //loop
