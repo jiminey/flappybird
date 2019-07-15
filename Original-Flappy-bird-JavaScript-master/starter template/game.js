@@ -106,7 +106,26 @@ const pipes = {
         for (let i = 0 ; i < this.position.length; i++){
             let p = this.position[i];
 
+           
+            let bottomPipeYPos = p.y + this.h + this.gap;
+
+            //collision logic
+            if(bird.x + bird.radius > p.x && bird.x - bird.radius < p.x + this.w &&
+               bird.y + bird.radius > p.y && bird.y - bird.radius < p.y + this.h ){
+                    state.current = state.over; 
+            }
+            //top 
+            if(bird.x + bird.radius > p.x && bird.x - bird.radius < p.x + this.w &&
+               bird.y + bird.radius > bottomPipeYPos && bird.y - bird.radius < bottomPipeYPos + this.h ){
+                    state.current = state.over; 
+            }
+            //bottom 
+            
             p.x -= this.dx; 
+            //removes pipe once off map 
+            if(p.x + this.w <= 0 ){
+                this.position.shift;
+            }
         }
     }
 }
@@ -181,6 +200,7 @@ const bird = {
     y: 150,
     w: 34,
     h: 26,
+    radius: 12,
 
     frame : 0,
     gravity : 0.25,
