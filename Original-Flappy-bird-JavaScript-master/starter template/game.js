@@ -8,7 +8,7 @@ const ctx = cvs.getContext('2d');
 
 let frames = 0; 
     //looping will increment frames 
-
+const DEGREE = Math.PI/180; 
 
 
 //load sprite image
@@ -124,12 +124,17 @@ const bird = {
     gravity : 0.25,
     jump : 4.6,
     speed : 0,
+    rotation : 0, 
 
     draw: function () {
         let bird = this.animation[this.frame];
 
-        ctx.drawImage(sprite, bird.sX, bird.sY, this.w, this.h, this.x - this.w/2 , this.y - this.h/2, this.w, this.h);
-
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.rotation);
+        ctx.drawImage(sprite, bird.sX, bird.sY, this.w, this.h,- this.w/2 , - this.h/2, this.w, this.h);
+        
+        ctx.restore(); 
     },
     
     flap: function(){
@@ -148,6 +153,7 @@ const bird = {
 
         if (state.current == state.getReady) {
             this.y = 150; // reset pos
+            this.rotation = 0 * DEGREE;
         } else {
             this.speed += this.gravity; // this is pos velocity
 
@@ -158,6 +164,13 @@ const bird = {
                 if (state.current == state.game){
                     state.current = state.over; 
                 }
+            }
+
+            //if speed is greater than jump than bird fall down 
+            if (this.speed >= this.jump) {
+                this.rotation = 90 * DEGREE; 
+            } else {
+                this.rotation = -25 * DEGREE; 
             }
         }
     }
