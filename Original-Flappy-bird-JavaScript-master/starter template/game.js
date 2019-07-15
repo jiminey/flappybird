@@ -67,6 +67,12 @@ const getReady = {
 
 }
 
+const state = {
+    current: 0,
+    getReady: 0,
+    game: 1,
+    over: 2
+}
 
 const gameOver = {
     sX: 175,
