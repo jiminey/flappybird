@@ -16,6 +16,8 @@ const DEGREE = Math.PI/180;
 const sprite = new Image(); 
 sprite.src = "img/sprite.png";
 
+// const skeletonsprite = new Image(); 
+// skeletonsprite.src = "img/skeletonatk.png";
 
 //background 
 const bg = {
@@ -58,6 +60,36 @@ const fg = {
     }
     
 }
+
+// const skeleton = {
+//     position : [], 
+//     animation: [
+//         { sX: 0, sY: 0 },
+//         { sX: 43, sY: 0 },
+//         { sX: 86, sY: 0 },
+
+//         { sX: 129, sY: 0 },
+//         { sX: 172, sY: 0 },
+//         { sX: 215, sY: 0 },
+
+//         { sX: 258, sY: 0 },
+//         { sX: 301, sY: 0 },
+//         { sX: 344, sY: 0 },
+//     ], 
+//     w: 43,
+//     h: 37,
+//     x: 0,
+//     y: cvs.height - 112,
+//     dx: 2, 
+
+//     draw : function() {
+//         for(let i = 0; i < this.position.length; i++){
+//             let p = this.position[i];
+
+//             ctx.drawImage(skeletonsprite, this)
+//         }
+//     }
+// }
 
 const pipes = {
     position : [],
@@ -158,17 +190,19 @@ const state = {
 
 //control the game
 
-cvs.addEventListener("click", function(evt){
-    switch(state.current) {
-        case state.getReady:
-            state.current = state.game;
-            break; 
-        case state.game: 
-            bird.flap();
-            break; 
-        case state.over:
-            state.current = state.getReady;
-            break;
+document.addEventListener("keydown", function(evt) {
+    if(evt.keyCode === 32) {
+        switch(state.current) {
+            case state.getReady:
+                state.current = state.game;
+                break; 
+            case state.game: 
+                bird.flap();
+                break; 
+            case state.over:
+                state.current = state.getReady;
+                break;
+        }
     }
 })
 
@@ -271,12 +305,12 @@ const bird = {
 
         if (state.current == state.getReady) {
             this.y = cvs.height - fg.h - 100; // reset pos
-            this.rotation = 0 * DEGREE;
+            // this.rotation = 0 * DEGREE;
         } else {
 
             
             this.speed += this.gravity;
-            
+            //ground logic 
             if (this.y >= cvs.height - fg.h){
                 this.y = cvs.height - fg.h;
                 this.speed = 0; 
@@ -284,6 +318,7 @@ const bird = {
 
             }
 
+            //air logic
             if (this.y < cvs.height - fg.h){
                 this.y += this.speed; // this changes y position of the bird with speed 
             }
