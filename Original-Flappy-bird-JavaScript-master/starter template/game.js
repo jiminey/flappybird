@@ -236,21 +236,27 @@ const bird = {
     gravity : 0.25,
     jump : 4.6,
     speed : 0,
-    rotation : 0, 
+    rotation : 0,
+    jump_counter : 0,
 
     draw: function () {
         let bird = this.animation[this.frame];
 
         ctx.save();
         ctx.translate(this.x, this.y);
-        ctx.rotate(this.rotation);
+        // ctx.rotate(this.rotation);
         ctx.drawImage(sprite, bird.sX, bird.sY, this.w, this.h,- this.w/2 , - this.h/2, this.w, this.h);
         
         ctx.restore(); 
     },
     
     flap: function(){
-       this.speed = -this.jump;
+        if (this.jump_counter > 0) {
+            this.speed = -this.jump;
+            this.y = this.y-1;
+            this.jump_counter -= 1;
+        }
+
     },
 
     update: function() { 
@@ -264,26 +270,31 @@ const bird = {
         
 
         if (state.current == state.getReady) {
-            this.y = fg.y; // reset pos
+            this.y = cvs.height - fg.h - 100; // reset pos
             this.rotation = 0 * DEGREE;
         } else {
-            this.speed += this.gravity;
 
-            if (this.y >= fg.y) {
-                this.y = fg.y;
-                this.speed = 0;
-            } //logic to keep it at foregroun 
-
-            this.y += this.speed; // this changes y position of the bird with speed 
             
-            // if(this.y + this.h/2 >= cvs.height - fg.h) {
-            //     this.y = cvs.height - fg.h - this.h/2;
-            //     if (state.current == state.game){
-            //         state.current = state.over; 
-            //     }
-            // }
+            this.speed += this.gravity;
+            
+            if (this.y >= cvs.height - fg.h){
+                this.y = cvs.height - fg.h;
+                this.speed = 0; 
+                this.jump_counter = 1; 
 
-            // //if speed is greater than jump than bird fall down 
+            }
+
+            if (this.y < cvs.height - fg.h){
+                this.y += this.speed; // this changes y position of the bird with speed 
+            }
+
+            
+
+
+
+
+
+            //if speed is greater than jump than bird fall down 
             // if (this.speed >= this.jump) {
             //     this.rotation = 90 * DEGREE; 
             //     this.frame = 1; 
