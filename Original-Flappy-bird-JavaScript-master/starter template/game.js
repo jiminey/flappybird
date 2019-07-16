@@ -47,7 +47,7 @@ const fg = {
     h: 112,
     x: 0,
     y: cvs.height - 112,
-    dx : 2, 
+    dx : 8, 
     
     draw: function () {
         ctx.drawImage(sprite, this.sX, this.sY, this.w, this.h, this.x, this.y, this.w, this.h);
@@ -70,36 +70,30 @@ const skeleton = {
 
     animation: [
         
-        { sX: 0, sY: 0 },
-        { sX: 43, sY: 0 },
-        { sX: 86, sY: 0 },
-
-        { sX: 129, sY: 0 },
-        { sX: 172, sY: 0 },
-        { sX: 215, sY: 0 },
-
-        { sX: 258, sY: 0 },
-        { sX: 301, sY: 0 },
-        { sX: 344, sY: 0 },
-
-        { sX: 387, sY: 0 },
-        { sX: 430, sY: 0 },
-        { sX: 473, sY: 0 },
-
-        { sX: 516, sY: 0 },
-        { sX: 559, sY: 0 },
-        { sX: 645, sY: 0 },
-
-        { sX: 688, sY: 0 },
         { sX: 731, sY: 0 },
-
-
+        { sX: 688, sY: 0 },
+        { sX: 645, sY: 0 },
+        { sX: 559, sY: 0 },
+        { sX: 516, sY: 0 },
+        { sX: 473, sY: 0 },
+        { sX: 430, sY: 0 },
+        { sX: 387, sY: 0 },
+        { sX: 344, sY: 0 },
+        { sX: 301, sY: 0 },
+        { sX: 258, sY: 0 },
+        { sX: 215, sY: 0 },
+        { sX: 172, sY: 0 },
+        { sX: 129, sY: 0 },
+        { sX: 86, sY: 0 },
+        { sX: 43, sY: 0 },
+        { sX: 0, sY: 0 },
+        
     ],
     
 
     w: 43,
     h: 37,
-    dx: 2,
+    dx: 8,
     frame: 0, 
 
 
@@ -123,7 +117,8 @@ const skeleton = {
         if (state.current !== state.game) return;
         
         //pushes skeletons in arr 
-        if (frames % 200    == 0) {
+        if (frames % (50 + (Math.floor(Math.random() * 25)))  == 0) {
+        // if (frames % Math.floor(400 * Math.random()) == 0) {
             this.position.push({
                 x: cvs.width,
                 y: cvs.height - fg.h - 37,
@@ -133,19 +128,29 @@ const skeleton = {
         for (let i = 0; i < this.position.length; i++) {
             let p = this.position[i];
 
+            if (bird.x + bird.radius - 50 > p.x && bird.x - bird.radius < p.x + this.w && bird.y + bird.radius > p.y && bird.y - bird.radius < p.y + this.h) {
+                state.current = state.over;
+                skeleton.reset();
+            }
+
             p.x -= this.dx;
             
             //removes skeleton 
-            if (p.x + this.w <= 0) {
+            if (p.x + this.w + this.w <= 0) {
                 this.position.shift();
             }
         }
-         
         
+    },
+
+    reset: function () {
+        this.position = [];
     },
 
     
 }
+
+
 
 
 
